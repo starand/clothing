@@ -1,0 +1,56 @@
+body {
+	color: #C8C8C8;
+	background-color: #000000;
+	background-attachment: fixed;
+	font-family: "Trebuchet MS", Terminal;
+	font-size: 12px;
+	padding: 0px;
+	MARGIN: 0px;
+}
+
+img {
+	border:none;
+}
+
+input {
+	color: gray;
+	background-color: #000000;
+	font-weight: bold;
+	border-color: gray;
+	border-style: solid;
+}
+
+table.index {
+	width: 1024px;
+	padding: 0px;
+	margin: 0px;
+	border: 0px;
+}
+
+table.left-menu {
+	width: 100%;
+}
+
+td.left-menu {
+	width: 250px;
+}
+
+
+div.main-error {
+	color: red;
+	width: 100%;
+	text-align: center;
+}
+
+span.green-msg {
+	color: lawngreen;
+}
+
+span.error-msg {
+	color: red;
+}
+
+
+a:hover {
+	cursor: pointer;
+}
