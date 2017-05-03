@@ -26,7 +26,8 @@
     echo "</table>";
 ?>
 
-</td></tr><tr><td><BR>
+</td></tr><tr><td><BR><BR>
+<a id='contacts'> &nbsp; Зв'яжіться з нами</a>
 <?
     if (userHasPermission(PERM_ADD_GOOD)) {
         echo "<a id='add_category'>Додати категорію</a>";
@@ -82,6 +83,10 @@ $(document).ready(function() {
     });
     $("#show_sales").on("click", function() {
         $("#main").load("show_sales.php");
+    });
+
+    $("#contacts").click(function() {
+        $("#main").load("contacts.php");
     });
 });
 </script>

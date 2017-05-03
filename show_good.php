@@ -40,12 +40,7 @@
     echo "<div class='good-desc'>";
         echo "<div align='right' style='width:100%;'>";
             if (userHasPermission(PERM_EDIT_GOOD)) {
-                echo "<div style='text-align: right;'>";
-                    if ($good['g_state'] == GOOD_STATE_WAIT) {
-                        echo "<span align='right' style='width:100%;' id='{$good['g_id']}' class='arrive'> Прибув &nbsp; </span>";
-                    }
-                    echo "<span align='right' style='width:100%;' id='{$good['g_id']}' class='edit'> Змінити </span>";
-                echo "</div>";
+                echo good_control_panel();
             }
         echo "</div>";
 

@@ -59,12 +59,7 @@ function show_goods($goods, $cols) {
             }
             echo "<div style='position:relative;'>";
             if (userHasPermission(PERM_EDIT_GOOD)) {
-                echo "<div style='text-align: right;'>";
-                    if ($good['g_state'] == GOOD_STATE_WAIT) {
-                        echo "<span align='right' style='width:100%;' id='{$good['g_id']}' class='arrive'> Прибув &nbsp; </span>";
-                    }
-                    echo "<span align='right' style='width:100%;' id='{$good['g_id']}' class='edit'> Змінити </span>";
-                echo "</div>";
+                echo good_control_panel();
             }
 
             echo "<div class='good-title'>{$good['g_title']} - {$good['g_price']} грн.</div>";
@@ -78,6 +73,21 @@ function show_goods($goods, $cols) {
     }
 
     echo "</tr></TABLE>";
+}
+
+#---------------------------------------------------------------------------------------------------
+## returns good control panel as test
+function good_control_panel() {
+    global $good;
+
+    $output = "<div style='text-align: right;'>";
+        if ($good['g_state'] == GOOD_STATE_WAIT) {
+            $output .= "<span align='right' style='width:100%;' id='{$good['g_id']}' class='arrive'> Прибув &nbsp; </span>";
+        }
+        $output .= "<span align='right' style='width:100%;' id='{$good['g_id']}' class='edit'> Змінити </span>
+    </div>";
+
+    return $output;
 }
 
 #---------------------------------------------------------------------------------------------------
