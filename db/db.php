@@ -53,7 +53,7 @@ function add_good($cat, $title, $desc, $image, $count, $price) {
 
 	$sql = "INSERT INTO goods ".
 		   "VALUES(NULL, $cat, '$title', '$desc', '$image', now(), now(), $count, $price, 0, ".
-		   GOOD_STATE_WAIT.", '')";
+		   GOOD_STATE_WAIT.", '', 0)";
 	return uquery($sql);
 }
 
@@ -81,6 +81,15 @@ function updateGoodTotalPrice($good, $price) {
 	$price = (float)$price;
 
 	$sql = "UPDATE goods SET g_total_price=$price WHERE g_id=$good";
+	return uquery($sql);
+}
+
+#---------------------------------------------------------------------------------------------------
+## updates good shows counter
+function incrementGoodViewCounter($good) {
+	$good = (int)$good;
+
+	$sql = "UPDATE goods SET g_views=g_views+1 WHERE g_id=$good";
 	return uquery($sql);
 }
 

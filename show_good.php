@@ -14,6 +14,8 @@
         show_error("Вибрано не вірний товар");
     }
 
+    incrementGoodViewCounter($goodId);
+
     echo "<div style='text-align: right; font-size: 12px;'>";
         $prev = getPrevGood($goodId, $good['g_cat']);
         if ($prev) {

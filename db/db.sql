@@ -14,6 +14,7 @@ CREATE TABLE goods (
     g_count tinyint NOT NULL,
     g_total_price decimal NOT NULL default 0,
     g_state tinyint NOT NULL default 0,
+    g_views int(10) unsigned NOT NULL default 0,
     PRIMARY KEY(g_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
