@@ -16,12 +16,12 @@
 
     echo "<h2>{$cat['cat_desc']}</h2>";
 
+    if (userHasPermission(PERM_ADD_GOOD)) {
+        echo "<a id='add_good'>Додати товар</a><BR>";
+    }
+
     $goods = get_goods_by_cat($cat['cat_id']);
     show_goods($goods, 3);
-   
-    if (userHasPermission(PERM_ADD_GOOD)) {
-        echo "<a id='add_good'>Додати товар</a>";
-    }
 
     include_once ROOT_PATH."/common/good_scripts.inc";
 ?>

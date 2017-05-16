@@ -52,7 +52,8 @@ function add_good($cat, $title, $desc, $image, $count, $price) {
 	$image = addslashes($image);
 
 	$sql = "INSERT INTO goods ".
-		   "VALUES(NULL, $cat, '$title', '$desc', '$image', now(), now(), $count, $price, 0, 0, '')";
+		   "VALUES(NULL, $cat, '$title', '$desc', '$image', now(), now(), $count, $price, 0, ".
+		   GOOD_STATE_WAIT.", '')";
 	return uquery($sql);
 }
 
@@ -348,7 +349,9 @@ function getSalesTotal($condition = "") {
 # return total amount of sales
 function getSalesCountTotal($condition = "") {
 	if (strlen($condition)) {
-		$condition = " WHERE $condition";
+		$condition = " WHERE $condition AND s_earn > 1";
+	} else {
+		$condition = " WHERE s_earn > 1";
 	}
 
 	$sql = "SELECT count(1) FROM sales $condition";
@@ -437,13 +440,19 @@ function updateClientIdForSale($saleId, $clientId) {
 
 #---------------------------------------------------------------------------------------------------
 # update dim id for sale
-
 function updateDimIdForSale($saleId, $dimId) {
 	$saleId = (int)$saleId;
 	$dimId = (int)$dimId;
 
 	$sql = "UPDATE sales SET s_dim=$dimId WHERE s_id=$saleId";;
 	return uquery($sql);
+}
+
+#---------------------------------------------------------------------------------------------------
+# returns aberage earned sum by sale
+function getAvgEarnPerSale() {
+	$sql = "SELECT sum(s_earn)/count(1) FROM sales WHERE s_earn>0";
+	return round(row_to_array(uquery($sql))[0], 2);
 }
 
 #---------------------------------------------------------------------------------------------------

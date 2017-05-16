@@ -21,12 +21,16 @@
 
     $sales = get_sales($condition); // get all goods;
 
+    $lastMonthCondition = "month(s_date)=month(now())";
+
     echo "<center><h2>Список продаж</h2>";
 
-    echo "<div style='font-size:12px;'>";
-    echo "Дохід: <span style='color:green;'>".getSalesTotal($condition)."</span>. ";
-    echo "Кількість продаж: ".getSalesCountTotal($condition);
-    echo "</div>";
+    echo "<div style='font-size:12px;'>
+        Дохід: <span style='color:green;'>".getSalesTotal($condition)."</span>. &nbsp;
+        Кількість продаж: ".getSalesCountTotal($condition).".
+        За продажу: ".getAvgEarnPerSale()." &nbsp;
+        За місяць: <span style='color:green;'>".getSalesTotal($lastMonthCondition)."</span>.
+    </div>";
 
     echo "<table class='price-list' cellspacing='1' cellpadding='1'>
             <tr><td class='price-list-header'>#</td>
