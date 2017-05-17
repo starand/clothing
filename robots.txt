@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /db/
+Host: www.boyclothing.lviv.ua
+
+
+Sitemap: http://www.boyclothing.lviv.ua/sitemap.txt.
