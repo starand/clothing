@@ -56,7 +56,7 @@
             echo " </td>";
             echo "<td><img src='$shift/themes/light/filter.jpeg' style='width:20px;' id='{$sale['s_client']}' class='client-filter'></td>";
             echo "<td class='price-list' id='g{$sale['s_good']}'>
-            <img src='{$sale['g_image']}' class='good-list'></td>";
+            <img src='".get_image_url($sale['g_image'])."' class='good-list'></td>";
             echo "<td class='price-list' id='g{$sale['s_good']}'>{$sale['g_title']}</td>";
             echo "<td><img src='$shift/themes/light/filter.jpeg' style='width:20px;' id='{$sale['s_good']}' class='good-filter'></td>";
             $text = parseDGString($sale['dg_data'])[0];

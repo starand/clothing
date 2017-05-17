@@ -59,11 +59,11 @@ function show_goods($goods, $cols) {
             }
             echo "<div style='position:relative;'>";
             if (userHasPermission(PERM_EDIT_GOOD)) {
-                echo good_control_panel();
+                echo good_control_panel($good); 
             }
 
             echo "<div class='good-title'>{$good['g_title']} - {$good['g_price']} грн.</div>";
-            echo "<img src='{$good['g_image']}' style='width:250px;'><br>";
+            echo "<img src='".get_image_url($good['g_image'])."' style='width:250px;'><br>";
 
         echo "</div></td>";
 
@@ -77,9 +77,7 @@ function show_goods($goods, $cols) {
 
 #---------------------------------------------------------------------------------------------------
 ## returns good control panel as test
-function good_control_panel() {
-    global $good;
-
+function good_control_panel($good) {
     $output = "<div style='text-align: right;'>";
         if ($good['g_state'] == GOOD_STATE_WAIT) {
             $output .= "<span align='right' style='width:100%;' id='{$good['g_id']}' class='arrive'> Прибув &nbsp; </span>";
@@ -197,6 +195,17 @@ function get_delivery_name($deliveryType) {
 function parse_order_description($desc) {
     $res = Array();
     $lines = explode("\n", $desc);
+}
+
+#---------------------------------------------------------------------------------------------------
+#
+function get_image_url($image) {
+    $pos = strrpos($image, "/");
+    if ($pos) {
+        $image = substr($image, ++$pos);
+    }
+
+    return "http://www.boyclothing.lviv.ua/images/".$image;
 }
 
 #---------------------------------------------------------------------------------------------------

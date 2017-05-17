@@ -167,7 +167,7 @@
                 $desc .= "$goodId:";
 
                 echo "<tr>";
-                echo "<td class='price-list'><img src='{$good['g_image']}' style='width:60px;height:80px;'></td>";
+                echo "<td class='price-list'><img src='".get_image_url($good['g_image'])."' style='width:60px;height:80px;'></td>";
                 echo "<td class='price-list' style='padding: 10px;'>{$good['g_title']}";
 
                 $dimCount = count($dims);

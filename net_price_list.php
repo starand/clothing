@@ -44,7 +44,7 @@
         echo "<tr class='$class'>
                 <td class='$class' id='{$good['g_id']}'>{$good['g_id']}</td>
                 <td class='$class' id='{$good['g_id']}'>
-                <img src='{$good['g_image']}' style='width:30px;height:40px;'/></td>
+                <img src='".get_image_url($good['g_image'])."' style='width:30px;height:40px;'/></td>
                 <td class='$class' id='good{$good['g_id']}'>{$good['g_title']}</td>
                 <td class='$class' id='price{$good['g_id']}'>{$good['g_total_price']}</td>
                 <td class='$class' id='cost{$good['g_id']}'>{$good['g_count']}</td>

@@ -54,7 +54,7 @@
                 $dimension = count($dimArray) ? $dimArray[0] : $orderItems[1];
                 echo "<tr>
                         <td class='$class'>{$idx}</td>
-                        <td class='$class'><img src='{$good['g_image']}' style='width:30px;'></td>
+                        <td class='$class'><img src='".get_image_url($good['g_image'])."' style='width:30px;'></td>
                         <td class='$class'>{$good['g_title']}</td>
                         <td class='$class'>$dimension</td>
                         <td class='$class'>{$good['g_price']}</td>

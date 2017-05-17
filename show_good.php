@@ -42,7 +42,7 @@
     echo "<div class='good-desc'>";
         echo "<div align='right' style='width:100%;'>";
             if (userHasPermission(PERM_EDIT_GOOD)) {
-                echo good_control_panel();
+                echo good_control_panel($good);
             }
         echo "</div>";
 
@@ -69,7 +69,7 @@
     // echo "<pre>"; var_dump($images); echo "</pre>";
     echo "<center>";
     foreach($images as $img) {
-        echo "<div class='good-image'><img src='{$img}' style='width:680px;'></div>"; // 
+        echo "<div class='good-image'><img src='".get_image_url($img)."' style='width:680px;'></div>";
     }
 
     include_once ROOT_PATH."/common/good_scripts.inc";   
