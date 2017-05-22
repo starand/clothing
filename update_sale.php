@@ -41,7 +41,7 @@
 $(document).ready(function() {
     $(".sel-user")
     .click(function(event) {
-        event.stopImmediatePropagation();  
+        event.stopImmediatePropagation();
     }).change(function(e){
         id = $(this).attr('id');
         clientId = $(this).find(":selected").val();

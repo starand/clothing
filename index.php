@@ -36,7 +36,7 @@ function load_page(page, target) {
     <td class='left-menu'><div id='left_menu'><? include_once "left_menu.php"; ?></div></td>
     <td class='main'>
         <div style='padding:6px; background:white;'>
-            Наша група - <a href='https://vk.com/boys.clothing' target='_blank'>https://vk.com/boys.clothing</a>
+            Ми на FaceBook - <a href='https://www.facebook.com/groups/boyclothing/' target='_blank'>https://www.facebook.com/groups/boyclothing/</a>
         </div>
         <table cellspacing='0' cellpadding='0' style='width:100%;'>
             <tr><td><div id='main_error' class='main-error'> &nbsp; </div></td></tr>

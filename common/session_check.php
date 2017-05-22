@@ -45,14 +45,14 @@ define('PERM_ADD_SELL',			0b00010000);
 define('PERM_EDIT_USER', 		0b00100000);
 define('PERM_SEE_CLIENT', 		0b01000000);
 define('PERM_VIEW_ORDERS',		0b10000000);
-
+define('PERM_UPDATE_ORDERS',	0b100000000);
 
 #---------------------------------------------------------------------------------------------------
 
 	$user = checkUser();
 
-	define('ROOT_PATH', '/var/www/clothing/');
-	define('ROOT_SHIFT', '/clothing');
-
 	ini_set('display_errors', 1);
+
+	define('ROOT_PATH', '/home/boycloth/boyclothing.lviv.ua/www/');
+	define('ROOT_SHIFT', '');
 ?>

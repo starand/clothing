@@ -191,10 +191,21 @@ function get_delivery_name($deliveryType) {
 }
 
 #---------------------------------------------------------------------------------------------------
-#
+# parses order description into array
 function parse_order_description($desc) {
     $res = Array();
     $lines = explode("\n", $desc);
+}
+
+#---------------------------------------------------------------------------------------------------
+# decodes description of order
+function getOrderState($state) {
+    switch ($state) {
+        case 0: return "НОВИЙ";
+        case 1: return "ОЧІКУЄ ОПЛАТИ";
+        case 2: return "Відправлено";
+    }
+    return "НЕВІРНИЙ СТАТУС";
 }
 
 #---------------------------------------------------------------------------------------------------

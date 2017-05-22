@@ -467,6 +467,12 @@ function getAvgEarnPerSale() {
 #---------------------------------------------------------------------------------------------------
 ## Client functions
 #---------------------------------------------------------------------------------------------------
+# Order state enum
+define('ORDER_NEW', 0);
+define('ORDER_WAITPAY', 1);
+define('ORDER_SENT', 2);
+
+#---------------------------------------------------------------------------------------------------
 # adds client order
 function add_order($desc, $pay, $delivery, $name, $address, $phone, $mail, $msg, $price) {
 	$desc = addslashes($desc);
@@ -494,17 +500,24 @@ function get_order($id) {
 }
 
 #---------------------------------------------------------------------------------------------------
+# returns client order
+function get_orders() {
+	$sql = "SELECT * FROM orders";
+	return res_to_array(uquery($sql));
+}
+
+#---------------------------------------------------------------------------------------------------
 # returns count of new orders
 function get_undone_orders_count() {
-	$sql = "SELECT count(1) FROM orders WHERE o_state=0";
+	$sql = "SELECT count(1) FROM orders WHERE o_state != ".ORDER_SENT;
 	$res = row_to_array(uquery($sql));
 	return $res ? $res[0] : 0;
 }
 
 #---------------------------------------------------------------------------------------------------
 # returns new orders
-function get_new_orders() {
-	$sql = "SELECT * FROM orders WHERE o_state=0";
+function get_uncompleted_orders() {
+	$sql = "SELECT * FROM orders WHERE o_state != ".ORDER_SENT;
 	return res_to_array(uquery($sql));
 }
 
@@ -517,6 +530,18 @@ function add_visit($ip) {
 	return uquery($sql);
 }
 
+#---------------------------------------------------------------------------------------------------
+# updates order state
+function update_order_state($id, $state) {
+	$id = (int)$id;
+	$state = (int)$state;
+
+	$sql = "UPDATE orders SET o_state=$state WHERE o_id=$id";
+	return uquery($sql);
+}
+
+#---------------------------------------------------------------------------------------------------
+## Visits functions
 #---------------------------------------------------------------------------------------------------
 # returns count of all visits per day
 function get_visits_per_day() {
