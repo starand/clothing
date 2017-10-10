@@ -43,23 +43,24 @@ define('GOOD_STATE_WAIT',		2);
 
 #---------------------------------------------------------------------------------------------------
 ## add good
-function add_good($cat, $title, $desc, $image, $count, $price) {
+function add_good($cat, $title, $desc, $image, $count, $price, $link = "") {
 	$cat = (int)$cat;
 	$count = (int)$count;
 	$price = (float)$price;
 	$title = addslashes($title);
 	$desc = addslashes($desc);
 	$image = addslashes($image);
+	$link = addslashes($link);
 
 	$sql = "INSERT INTO goods ".
 		   "VALUES(NULL, $cat, '$title', '$desc', '$image', now(), now(), $count, $price, 0, ".
-		   GOOD_STATE_WAIT.", '', 0)";
+		   GOOD_STATE_WAIT.", '$link', 0)";
 	return uquery($sql);
 }
 
 #---------------------------------------------------------------------------------------------------
 ## updates goods
-function update_good($goodId, $cat, $title, $desc, $image, $count, $price) {
+function update_good($goodId, $cat, $title, $desc, $image, $count, $price, $link='') {
 	$goodId = (int)$goodId;
 	$cat = (int)$cat;
 	$count = (int)$count;
@@ -67,9 +68,10 @@ function update_good($goodId, $cat, $title, $desc, $image, $count, $price) {
 	$title = addslashes($title);
 	$desc = addslashes($desc);
 	$image = addslashes($image);
+	$link = addslashes($link);
 
 	$sql = "UPDATE goods SET g_cat=$cat, g_title='$title', g_desc='$desc', g_image='$image', ".
-		   "g_count=$count, g_price=$price, g_mtime=now() ". 
+		   "g_count=$count, g_price=$price, g_mtime=now(), g_link='$link' ".
 		   "WHERE g_id=$goodId";
 	return uquery($sql);
 }
@@ -391,12 +393,29 @@ function get_sale($id) {
 
 #---------------------------------------------------------------------------------------------------
 # get seller name by bought good dimenssion
-
-function getSellerByDim($dim) {
+function getSaleInfoByDim($dim) {
 	$dim = (int)$dim;
-	$sql = "SELECT c_name FROM clients, sales WHERE s_dim=$dim AND s_client=c_id";
-	$row = row_to_array(uquery($sql));
-	return count($row) ? $row[0] : "UNKNOWN";
+	$sql = "SELECT c_name, s_earn FROM clients, sales WHERE s_dim=$dim AND s_client=c_id";
+	return row_to_array(uquery($sql));
+	//return count($row) ? $row[0] : "UNKNOWN";
+}
+
+#---------------------------------------------------------------------------------------------------
+# returns statistics of good from sales table
+function getGoodSalesStat($goodId) {
+	$goodId = (int)$goodId;
+	$sql = "SELECT count(1) as count, sum(s_earn) as sum FROM sales WHERE s_good=$goodId";
+	$saleStat = row_to_array(uquery($sql));
+
+	$good = get_good($goodId);
+	if ($saleStat['sum']) {
+		$saleStat['total_sum'] = $good['g_total_price'];
+		$saleStat['total_count'] = $good['g_count'];
+
+		return $saleStat;
+	}
+
+	return false;
 }
 
 #---------------------------------------------------------------------------------------------------
@@ -459,8 +478,11 @@ function updateDimIdForSale($saleId, $dimId) {
 
 #---------------------------------------------------------------------------------------------------
 # returns aberage earned sum by sale
-function getAvgEarnPerSale() {
-	$sql = "SELECT sum(s_earn)/count(1) FROM sales WHERE s_earn>0";
+function getAvgEarnPerSale($condition = "") {
+	if (strlen($condition)) {
+		$condition = " AND $condition";
+	}
+	$sql = "SELECT sum(s_earn)/count(1) FROM sales WHERE s_earn>0 $condition";
 	return round(row_to_array(uquery($sql))[0], 2);
 }
 

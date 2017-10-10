@@ -8,27 +8,30 @@
         show_error("Недостатньо прав для здійснення операції");
     }
 
-    $condition = "";
+    $condition = "s_earn > -1";
     if (isset($_GET['client'])) {
-        $condition .= " s_client=".(int)$_GET['client'];
+        $condition .= " AND s_client=".(int)$_GET['client'];
     }
     if (isset($_GET['good'])) {
-        $condition .= " s_good=".(int)$_GET['good'];
+        $condition .= " AND s_good=".(int)$_GET['good'];
     }
     if (isset($_GET['time'])) {
-        $condition .= " DATE(s_date)=DATE('".addslashes($_GET['time'])."')";
+        $condition .= " AND DATE(s_date)=DATE('".addslashes($_GET['time'])."')";
     }
 
     $sales = get_sales($condition); // get all goods;
 
     $lastMonthCondition = "month(s_date)=month(now())";
+    if (strlen($condition) != 0) {
+        $lastMonthCondition .= " AND $condition";
+    }
 
     echo "<center><h2>Список продаж</h2>";
 
     echo "<div style='font-size:12px;'>
         Дохід: <span style='color:green;'>".getSalesTotal($condition)."</span>. &nbsp;
         Кількість продаж: ".getSalesCountTotal($condition).".
-        За продажу: ".getAvgEarnPerSale()." &nbsp;
+        За продажу: ".getAvgEarnPerSale($condition)." &nbsp;
         За місяць: <span style='color:green;'>".getSalesTotal($lastMonthCondition)."</span>.
     </div>";
 

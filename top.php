@@ -6,7 +6,7 @@
 <tr>
     <td class ='top-logo' id='top_logo'>
         <a class='title'>
-        <div class='top-logo'>BoysClothing</div>
+        <div class='top-logo'>BoyClothing</div>
         </a>
     </td>
     <td class='top-title'>Одяг та взуття на хлопчика. Низькі ціни!</td>

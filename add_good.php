@@ -9,7 +9,7 @@
     }
 
     if (isset($_POST['catId']) && isset($_POST['title']) && isset($_POST['desc']) && 
-        isset($_POST['count']) && isset($_POST['price']) && isset($_POST['image']))
+        isset($_POST['count']) && isset($_POST['price']) && isset($_POST['image']) && isset($_POST['link']))
     {
         //var_dump($_POST);
         $cat_id = (int)$_POST['catId'];
@@ -25,6 +25,8 @@
         if ($price < 5 || $price > 2000) { show_error("Ціна повинна бути від 5 до 2000 грн."); }
         $image = addslashes($_POST['image']);
         if (strlen($image) < 10) { show_error("Не коректна адреса зображення"); }
+        $link = $_POST['link'];
+        if (filter_var($link, FILTER_VALIDATE_URL) === false) { show_error("Не коректна адреса інтернет магазину"); }
 
         if (isset($_POST['editId'])) {
             $goodId = (int)$_POST['editId'];
@@ -33,7 +35,7 @@
                 show_error("Не правильно вказаний товар");
             }
 
-            if (update_good($goodId, $cat_id, $title, $desc, $image, $count, $price)) {
+            if (update_good($goodId, $cat_id, $title, $desc, $image, $count, $price, $link)) {
                 show_message("Товар успішно обновлено");
                 load_page("show_good.php?id=$goodId");
                 die();
@@ -41,7 +43,7 @@
                 show_error("Помилка бази даних");
             }
         } else {
-            if (add_good($cat_id, $title, $desc, $image, $count, $price)) {
+            if (add_good($cat_id, $title, $desc, $image, $count, $price, $link)) {
                 show_message("Товар успішно доданий");
                 load_page("show_category.php?id=$cat_id");
                 die();
@@ -72,7 +74,7 @@
         show_error("Категорія товару не вказана");
     }
 
-    $title = ''; $price = ''; $count = ''; $image = ''; $desc = '';
+    $title = ''; $price = ''; $count = ''; $image = ''; $desc = ''; $link = '';
     if (isset($good)) {
         echo "<h2>Редагувати товар '{$good['g_title']}'</h2>";
 
@@ -81,6 +83,7 @@
         $count = $good['g_count'];
         $image = $good['g_image'];
         $desc = $good['g_desc'];
+        $link = $good['g_link'];
     } else {
         echo "<h2>Додати товар в категорію '{$cat['cat_desc']}'</h2>";
     }
@@ -110,6 +113,10 @@
     </tr>
     <tr>
         <td colspan='6'><textarea name='desc' class='add-good' style='width:100%;'><?=$desc;?></textarea></td>
+    </tr>
+    <tr>
+        <td>Магазин: </td>
+        <td colspan='5'><input type='text' name='link' style='width:100%;' value='<?=$link;?>'></td>
     </tr>
     <tr><td><input type='submit' value='<?=(isset($good) ? 'Змінити' : 'Додати');?>'></td></tr>
 </table>

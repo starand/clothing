@@ -30,25 +30,19 @@
 <a id='contacts'> &nbsp; Зв'яжіться з нами</a>
 <?
     if (userHasPermission(PERM_ADD_GOOD)) {
-        echo "<a id='add_category'>Додати категорію</a>";
+        echo "<BR><BR><a id='add_category'>Додати категорію</a>";
     }
 ?>
 </td></tr><tr><td>
 <?
     if (userHasPermission(PERM_SEE_CLIENT)) {
-        echo "<BR><a id='show_clients'>Список клієнтів</a>";
-    }
-?>
-</td></tr><tr><td>
-<?
-    if (userHasPermission(PERM_EDIT_USER)) {
-        echo "<a id='add_client'>Додати клієнта</a>";
+        echo "<BR><a id='show_clients'>Клієнти</a>";
     }
 ?>
 </td></tr><tr><td>
 <?
     if (userHasPermission(PERM_ADD_SELL)) {
-        echo "<BR><a id='show_sales'>Продажі</a>";
+        echo "<a id='show_sales'>Продажі</a>";
     }
 ?>
 </td></tr><tr><td>
@@ -74,9 +68,6 @@ $(document).ready(function() {
     });
     $("#net_prices").on("click", function() {
         $("#main").load("net_price_list.php");
-    });
-    $("#add_client").on("click", function() {
-        $("#main").load("add_client.php");
     });
     $("#show_clients").on("click", function() {
         $("#main").load("client_list.php");

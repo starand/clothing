@@ -8,6 +8,10 @@
         show_error("Недостатньо прав для здійснення операції");
     }
 
+    if (userHasPermission(PERM_EDIT_USER)) {
+        echo "<a id='add_client'>Додати клієнта</a>";
+    }
+
     $clients = getClients(); // get all goods;
 
     echo "<center><h2>Список клієнтів</h2>";
@@ -36,6 +40,9 @@ $(document).ready(function() {
         if (id.substr(0, 1) == 'c') {
             $('#main').load("show_sales.php?client=" + id.substr(1));
         }  
+    });
+    $("#add_client").on("click", function() {
+        $("#main").load("add_client.php");
     });
 });
 </script>

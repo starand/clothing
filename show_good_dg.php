@@ -32,7 +32,15 @@
             echo "<td class='dg-row' id='dim{$rec['dg_id']}'><a> &nbsp; Продати &nbsp; </a></td>";
         } else if ($rec['dg_state'] == DG_SOLD) {
             if (userHasPermission(PERM_ADD_SELL)) {
-                echo "<td class='dg-row-sold' id='$cellId'> &nbsp; ".getSellerByDim($rec['dg_id'])." &nbsp; </td>";
+                $client_info = "UNKNOWN";
+                $saleInfo = getSaleInfoByDim($rec['dg_id']);
+                if ($saleInfo) {
+                    $earned = floor($saleInfo['s_earn']);
+                    $client_info = "{$saleInfo['c_name']} ($earned)";
+                }
+
+                echo "<td class='dg-row-sold' id='$cellId'> &nbsp; $client_info &nbsp; </td>";
+
             } else {
                 echo "<td class='dg-row-sold' id='$cellId'> &nbsp; ".getDBRowState($rec['dg_state'])." &nbsp; </td>";
             }

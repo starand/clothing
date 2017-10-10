@@ -30,10 +30,10 @@
                 <td class='$class' id='{$order['o_id']}'>".get_pay_name($order['o_pay'])."</td>
                 <td class='$class' id='{$order['o_id']}'>".get_delivery_name($order['o_delivery'])."</td>
                 <td class='$class' id='{$order['o_id']}' style='color: green;'>{$order['o_total_price']}</td>
-                <td class='$class' id='s{$order['o_id']}' style='color:green;'>".getOrderState($order['o_state'])."</td>
+                <td class='$class' id='s{$order['o_id']}' style='color:green;' rowspan='2'>".getOrderState($order['o_state'])."</td>
             </tr>";
         
-        echo "<tr><td></td><td colspan='4'>
+        echo "<tr><td></td><td colspan='5'>
             <table>
                 <tr>
                     <td class='price-list-header'> &nbsp; # &nbsp; </td>
