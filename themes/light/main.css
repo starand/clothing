@@ -340,6 +340,10 @@ img.good-list {
 	width: 30px;
 }
 
+img.action {
+	width: 20px;
+}
+
 div.sold {
 	position: 'absolute';
     top: bottomTop;

@@ -177,10 +177,18 @@ function soldGoodIfAllDimsAreSold($goodId) {
 	$count = row_to_array(uquery($sql))[0];
 
 	if ($count == 1) {
-		$sql = "UPDATE goods SET g_state=1 WHERE g_id=$goodId";
+		$sql = "UPDATE goods SET g_state=".GOOD_STATE_SOLD." WHERE g_id=$goodId";
 		return uquery($sql);
 	}
 	return false;
+}
+
+#---------------------------------------------------------------------------------------------------
+## get latest goods
+function unsoldGood($goodId) {
+	$goodId = (int)$goodId;
+	$sql = "UPDATE goods SET g_state=".GOOD_STATE_PRESENT." WHERE g_id=$goodId";
+	return uquery($sql);
 }
 
 #---------------------------------------------------------------------------------------------------
@@ -329,6 +337,14 @@ function add_sale($good, $dim, $amount) {
 	$amount = (float)$amount;
 
 	$sql = "INSERT INTO sales VALUES(NULL, $good, $amount, now(), 0, $dim)";
+	return uquery($sql);
+}
+
+#---------------------------------------------------------------------------------------------------
+## remove sale
+function remove_sale($saleId) {
+	$saleId = (int)$saleId;
+	$sql = "DELETE FROM sales WHERE s_id=$saleId";
 	return uquery($sql);
 }
 
@@ -563,6 +579,15 @@ function update_order_state($id, $state) {
 }
 
 #---------------------------------------------------------------------------------------------------
+# deletes order
+function delete_order($id) {
+	$id = (int)$id;
+
+	$sql = "DELETE FROM orders WHERE o_id=$id";
+	return uquery($sql);
+}
+
+#---------------------------------------------------------------------------------------------------
 ## Visits functions
 #---------------------------------------------------------------------------------------------------
 # returns count of all visits per day
@@ -579,5 +604,130 @@ function get_uniq_visits_per_day() {
 }
 
 #---------------------------------------------------------------------------------------------------
+## Quesiton table fucntions
+#---------------------------------------------------------------------------------------------------
+# Order state enum
+define('QUESTION_NEW', 0);
+define('QUESTION_REPLIED', 1);
+
+#---------------------------------------------------------------------------------------------------
+# Returns unread questions
+function get_questsios($state = QUESTION_NEW) {
+	$sql = "SELECT * FROM questions WHERE q_state=$state";
+	return res_to_array(uquery($sql));
+}
+
+#---------------------------------------------------------------------------------------------------
+# add question
+function add_question($contact, $text, $goodId) {
+	$goodId = (int)$goodId;
+	$contact = addslashes($contact);
+	$text = addslashes($text);
+
+	global $_SERVER;
+
+	$sql = "INSERT INTO questions
+			VALUES(NULL, '{$_SERVER['REMOTE_ADDR']}', now(), '$contact', '$text', ".QUESTION_NEW.
+			", $goodId)";
+
+	return uquery($sql);
+}
+
+#---------------------------------------------------------------------------------------------------
+# checks whether at least 5 minute passed after prebvious message was added
+function checkNewQuestionTimeoutElapsed() {
+	global $_SERVER;
+
+	$sql = "SELECT TIME_TO_SEC(TIMEDIFF(now(), q_date))
+			FROM questions WHERE q_ip='{$_SERVER['REMOTE_ADDR']}' ORDER BY q_date DESC LIMIT 1";
+	$res = row_to_array(uquery($sql));
+
+	return $res ? $res[0] >= 300  : true;
+}
+
+#---------------------------------------------------------------------------------------------------
+# update question state
+function update_question_state($id, $state) {
+	$id = (int)$id;
+	$state = (int)$state;
+
+	$sql = "UPDATE questions SET q_state=$state WHERE q_id=$id";
+	return uquery($sql);
+}
+
+#---------------------------------------------------------------------------------------------------
+# removes question
+function delete_question($id) {
+	$id = (int)$id;
+
+	$sql = "DELETE FROM questions WHERE q_id=$id";
+	return uquery($sql);
+}
+
+#---------------------------------------------------------------------------------------------------
+## QuesFeedback table fucntions
+#---------------------------------------------------------------------------------------------------
+# Feedback state enum
+define('FEEDBACK_NEW', 		0);
+define('FEEDBACK_APPROVED', 1);
+
+#---------------------------------------------------------------------------------------------------
+# Returns unread feedbacks
+function get_feedbacks($state = FEEDBACK_APPROVED, $goodId = 0) {
+	$goodId = (int)$goodId;
+
+	$sql = "SELECT * FROM feedbacks WHERE f_state=$state AND ( f_good=$goodId OR $goodId=0 )";
+	return res_to_array(uquery($sql));
+}
+
+#---------------------------------------------------------------------------------------------------
+# add feedback
+function add_feedback($contact, $text, $goodId) {
+	$goodId = (int)$goodId;
+	$contact = addslashes($contact);
+	$text = addslashes($text);
+
+	global $_SERVER;
+
+	$sql = "INSERT INTO feedbacks
+			VALUES(NULL, '{$_SERVER['REMOTE_ADDR']}', now(), '$contact', '$text', $goodId, ".
+			FEEDBACK_NEW.")";
+
+	return uquery($sql);
+}
+
+#---------------------------------------------------------------------------------------------------
+# checks whether at least 5 minute passed after prebvious feedback was added
+function checkNewFeedbackTimeoutElapsed() {
+	global $_SERVER;
+
+	$sql = "SELECT TIME_TO_SEC(TIMEDIFF(now(), f_date))
+			FROM feedbacks WHERE f_ip='{$_SERVER['REMOTE_ADDR']}' ORDER BY f_date DESC LIMIT 1";
+	$res = row_to_array(uquery($sql));
+
+	return $res ? $res[0] >= 300  : true;
+}
+
+#---------------------------------------------------------------------------------------------------
+# update feedback state
+function update_feedback_state($id, $state) {
+	$id = (int)$id;
+	$state = (int)$state;
+
+	$sql = "UPDATE feedbacks SET f_state=$state WHERE f_id=$id";
+	return uquery($sql);
+}
+
+#---------------------------------------------------------------------------------------------------
+# removes feedback
+function delete_feedback($id) {
+	$id = (int)$id;
+
+	$sql = "DELETE FROM feedbacks WHERE f_id=$id";
+	return uquery($sql);
+}
+
+#---------------------------------------------------------------------------------------------------
+
 
 ?>

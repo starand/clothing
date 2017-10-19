@@ -42,9 +42,11 @@
             <td class='price-list-header'> Вид </td>
             <td class='price-list-header'> &nbsp; Товар &nbsp; </td>
             <td class='price-list-header'>  </td>
-            <td class='price-list-header'> &nbsp; Розмір &nbsp; </td>
+            <td class='price-list-header'> Розмір </td>
             <td class='price-list-header'> &nbsp; Дата &nbsp; </td>
-            <td class='price-list-header'> &nbsp; Сума &nbsp; </td></tr>";
+            <td class='price-list-header'> Сума </td>
+            <td class='price-list-header'> Відміна </td>
+            </tr>";
 
     foreach ($sales as $sale) {
         $client = getClient($sale['s_client']);
@@ -65,7 +67,8 @@
             $text = parseDGString($sale['dg_data'])[0];
             echo "<td class='price-list' id='d{$sale['s_id']}'>{$text}</td>";
             echo "<td class='price-list' id='{$sale['s_id']}'><div id='{$sale['s_date']}' class='time-filter'>&nbsp; {$sale['s_date']}</div></td>";
-            echo "<td class='price-list' id='{$sale['s_id']}'> &nbsp; ".floor($sale['s_earn'])." &nbsp;</td>";
+            echo "<td class='price-list' id='{$sale['s_id']}'> ".floor($sale['s_earn'])." </td>";
+            echo "<td class='price-list' id='r{$sale['s_id']}'> <img src='/images/undo.png' width='20'></td>";
         echo "</tr>";
     }
 
@@ -82,6 +85,8 @@ $(document).ready(function() {
             $('#' + id).load("update_sale.php?edit=&id=" + id.substr(1));
         } else if (id.substr(0, 1) == 'd') {
             $('#' + id).load("update_dim.php?edit=&id=" + id.substr(1));
+        } else if (id.substr(0, 1) == 'r') {
+            $('#' + id).load("revert_sale.php?saleId=" + id.substr(1));
         }
     });
 

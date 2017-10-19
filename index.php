@@ -6,6 +6,7 @@
 
     add_visit($_SERVER['REMOTE_ADDR']);
 ?>
+
 <script src="common/jquery.js"></script>
 
 <script>

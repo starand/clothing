@@ -95,6 +95,7 @@
         echo "<input type='hidden' name='editId' value='{$good['g_id']}'>";
     }
 ?>
+<center>
 <input type='hidden' name='catId' value='<?=$cat['cat_id'];?>'>
 <table cellspacing='0' cellpadding='1'>
     <tr>

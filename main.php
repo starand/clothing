@@ -5,7 +5,7 @@
 
     clear_error();
 ?>
-<div style='font-size:20px;font-weight:bold;'>Одяг та взуття на хлопчика. Низькі ціни!</div><BR>
+<div style='font-size:20px;font-weight:bold;'>Одяг та взуття на хлопчика</div><BR>
 <?
     $goods = get_latest_not_sold_goods(21);
     $sold_goods = get_latest_goods(21, 1);

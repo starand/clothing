@@ -238,6 +238,5 @@ function get_image_url($image) {
 #---------------------------------------------------------------------------------------------------
 
 // clear error whenever new page is loaded
-clear_error();
 
 ?>

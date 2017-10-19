@@ -47,6 +47,8 @@ define('PERM_SEE_CLIENT', 		0b01000000);
 define('PERM_VIEW_ORDERS',		0b10000000);
 define('PERM_UPDATE_ORDERS',	0b100000000);
 define('PERM_SEE_STATS',		0b1000000000);
+define('PERM_SEE_QUESTIONS',	0b10000000000);
+define('PERM_MANAGE_FEEDBACKS',	0b100000000000);
 
 #---------------------------------------------------------------------------------------------------
 

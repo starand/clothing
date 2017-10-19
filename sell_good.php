@@ -35,7 +35,7 @@
         $earned = $price - $good['g_total_price']/$good['g_count'];
         add_sale($goodId, $dim, $earned);
 
-        updateDGRecordState($dim, 1);
+        updateDGRecordState($dim, DG_SOLD);
         $dimRow = getDimRow($dim);
         echo getDBRowState($dimRow['dg_state']);
 

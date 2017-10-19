@@ -57,15 +57,37 @@
             echo "<B style='color: red;'>Товар продано!</B><br><br>";
         }
 
-        // price
-        echo "Ціна: {$good['g_price']}<br>";
-        // show description
-        echo "<p style='text-align: justify;'>$good_desc</p>";
+        // price & question
+        echo "<BR><table style='width:100%;font-size:12px;'>
+                <tr>
+                    <td>Ціна: {$good['g_price']}</td>
+                    <td style='text-align:right;'>
+                        <input id='question' type='button' value='У вас є запитання?'>
+                        <input id='feedback' type='button' value='Написати відгук'>
+                    </td>
+                </tr>
+              </table>
+              <p style='text-align: justify;'>$good_desc</p>";
 
         echo "<div id='dim-grid'><center>";
         include_once ROOT_PATH."show_good_dg.php";
         echo "</div>";
     echo "</div>";
+
+    $feedbacks = get_feedbacks(FEEDBACK_APPROVED, $goodId);
+    if (count($feedbacks)) {
+        echo "<div style='margin:20px;font-size:14px;'>Відкуги:
+            <table class='price-list' cellspacing='1' cellpadding='1'>";
+        foreach ($feedbacks as $fb) {
+            echo "<tr>
+                    <td style='text-align:right;font-size:14px; font-weight: bold'>
+                        &nbsp; {$fb['f_contact']}: &nbsp; </td>
+                    <td style='font-size:14px; font-style:italic; width: 700px;'>
+                        &nbsp; {$fb['f_text']} &nbsp; </td>
+                </tr>";
+        }
+        echo "</table></div>";
+    }
     
     // show images
     // echo "<pre>"; var_dump($images); echo "</pre>";
@@ -87,6 +109,13 @@ $(document).ready(function() {
     $(".next-good").on("click", function() {
         id = $(this).attr('id');
         $("#main").load("show_good.php?id=" + id);
+    });
+
+    $("#question").on("click", function() {
+        $("#main").load("add_question.php?goodId=<?=$goodId;?>");
+    });
+    $("#feedback").on("click", function() {
+        $("#main").load("add_feedback.php?goodId=<?=$goodId;?>");
     });
 });
 </script>

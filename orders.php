@@ -30,7 +30,19 @@
                 <td class='$class' id='{$order['o_id']}'>".get_pay_name($order['o_pay'])."</td>
                 <td class='$class' id='{$order['o_id']}'>".get_delivery_name($order['o_delivery'])."</td>
                 <td class='$class' id='{$order['o_id']}' style='color: green;'>{$order['o_total_price']}</td>
-                <td class='$class' id='s{$order['o_id']}' style='color:green;' rowspan='2'>".getOrderState($order['o_state'])."</td>
+                <td class='$class' id='s{$order['o_id']}' style='color:green;' rowspan='2'>";
+                switch ($order['o_state']) {
+                    case 0:
+                        echo "<img class='action' id='s{$order['o_id']}' src='/images/send.png'>
+                              <img class='action' id='d{$order['o_id']}' src='/images/delete.png'>";
+                        break;
+                    case 2:
+                        echo "<img class='action' id='{$order['o_id']}' src='/images/done.png'>";
+                        break;
+                    default:
+                        echo "ERROR!";
+                }
+           echo "</td>
             </tr>";
         
         echo "<tr><td></td><td colspan='5'>
@@ -83,8 +95,15 @@ $(document).ready(function() {
         id = $(this).attr('id');
         if (id.substr(0, 1) == 'g') {
             $('#main').load("show_good.php?id=" + id.substr(1));
-        } else if (id.substr(0, 1) == 's') {
-            $("#" + id).load("update_order.php?id=" + id.substr(1));
+        }
+    });
+
+    $(".action").click(function() {
+        id = $(this).attr('id');
+        if (id.substr(0, 1) == 's') {
+            $('#' + id).load("update_order.php?send=1&id=" + id.substr(1));
+        } else if (id.substr(0, 1) == 'd') {
+            $('#main').load("update_order.php?delete=1&id=" + id.substr(1));
         }
     });
 });

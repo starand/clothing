@@ -104,3 +104,29 @@ CREATE TABLE visitors (
 
 ----------------------------------------------------------------------------------------------------
 
+CREATE TABLE questions (
+    q_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+    q_ip char(15) NOT NULL,
+    q_date datetime NOT NULL,
+    q_contact varchar(255) NOT NULL,
+    q_text text NOT NULL,
+    q_good int(10) unsigned NOT NULL,
+    q_state tinyint NOT NULL default 0,
+    PRIMARY KEY(q_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+----------------------------------------------------------------------------------------------------
+
+CREATE TABLE feedbacks (
+    f_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+    f_ip char(15) NOT NULL,
+    f_date datetime NOT NULL,
+    f_contact varchar(255) NOT NULL,
+    f_text text NOT NULL,
+    f_good int(10) unsigned NOT NULL,
+    f_state tinyint NOT NULL default 0,
+
+    PRIMARY KEY(f_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+----------------------------------------------------------------------------------------------------

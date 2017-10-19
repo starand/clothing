@@ -17,34 +17,18 @@
         show_error("Не вірний номер замовлення");
     }
 
-    if (isset($_GET['set'])) {
-        $state = (int)$_GET['set'];
-        if ($state < 1 || $state > 3) {
-            show_error("Не вірний статус замовлення");
-        }
-
-        if (update_order_state($orderId, $state)) {
-            echo getOrderState($state);
+    if (isset($_GET['send'])) {
+        if (update_order_state($orderId, ORDER_SENT)) {
+           echo "<img class='action' id='$orderId' src='/images/done.png'>";
         } else {
-            show_error("Помилка бази даних");
+            show_error("DB Error");
         }
-    } else {
-        echo "<select class='sel-user' id='s$orderId' style='width:150px;'>";
-        foreach (range(1, 2) as $state) {
-            echo "<option value='$state'>".getOrderState($state)."</option>";
+    } else if (isset($_GET['delete'])) {
+        if (delete_order($orderId)) {
+            load_page("orders.php");
+            die();
+        } else {
+            show_error("DB Error");
         }
-        echo "</select>";
     }
 ?>
-<script>
-$(document).ready(function() {
-    $(".sel-user")
-    .click(function(event) {
-        event.stopImmediatePropagation();
-    }).change(function(e){
-        id = $(this).attr('id');
-        state = $(this).find(":selected").val();
-        $('#' + id).load("update_order.php?set=" + state + "&id=" + id.substr(1));
-    });
-});
-</script>

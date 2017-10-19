@@ -97,7 +97,7 @@
 
         if (add_order($desc, $pay, $delivery, $name, $address, $phone, $email, $comment, $totalPrice)) {
             $_SESSION['cl_basket'] = Array();
-            show_message("<center><h2>Ви успішно здійснили замовлення. Ми з вами зв'яжемось незабаром.<BR><BR>Дякуємо!<h2>", "main");
+            show_message("<BR><BR><center><b style='color:blue;'>Ви успішно здійснили замовлення. Ми з вами зв'яжемось незабаром.<BR><BR>Дякуємо!</b>", "main");
             load_page("top.php", "top");
             die();
         } else {
