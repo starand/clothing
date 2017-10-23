@@ -52,7 +52,7 @@ function show_goods($goods, $cols) {
             case GOOD_STATE_SOLD: $class = "good-item-sold"; break;
             case GOOD_STATE_WAIT: $class = "good-item-wait"; break;
         }
-        echo "<td class='$class' id='{$good['g_id']}'>";
+        echo "<td class='$class'>";
             if (userHasPermission(PERM_EDIT_GOOD)) {
                 echo good_control_panel($good);
             }
@@ -62,8 +62,8 @@ function show_goods($goods, $cols) {
                 case GOOD_STATE_WAIT: echo "<div class='sold'>Очікуємо доставку</div>"; break;
             }
 
-            echo "<div class='good-title'>{$good['g_title']} - {$good['g_price']} грн.</div>";
-            echo "<img src='".get_image_url($good['g_image'])."' style='width:250px;'><br>";
+            echo "<a class='good-item' href='/?id={$good['g_id']}'><div class='good-title'>{$good['g_title']} - {$good['g_price']} грн.</div>";
+            echo "<img src='".get_image_url($good['g_image'])."' style='width:250px;'></a><br>";
 
         echo "</td>";
 
@@ -81,21 +81,26 @@ function good_control_panel($good) {
     $goodId = $good['g_id'];
 
     $output = "<div style='text-align:right;background:white;font-size:12px;color:gray;'>";
-        $stats = getGoodSalesStat($goodId);
 
-        if ($stats) {
-            $back = floor($stats['sum'] + $stats['total_sum'] / $stats['total_count'] * $stats['count']);
-            $paid = $stats['total_sum'];
-            $left = $back - $paid;
-            $color = $left > 0 ? "blue" : "red";
-            $output .= "<span style='color:green;'>$back</span> / $paid <span style='color:$color;'>($left)</span> - ";
+        global $user;
+        if ($user && $user['u_login'] === "starand") {
+            $output .= "<span align='right' style='width:100%;' id='$goodId' class='copy-good'> Скопіювати &nbsp; </span>";
         }
 
         if ($good['g_state'] == GOOD_STATE_WAIT) {
             $output .= "<span align='right' style='width:100%;' id='$goodId' class='arrive'> Прибув &nbsp; </span>";
         }
-        $output .= "<span align='right' style='width:100%;' id='$goodId' class='edit'> Змінити </span>";
+        $output .= "<span align='right' style='width:100%;' id='$goodId' class='edit'> Змінити &nbsp; </span>";
         $output .= "<a href='{$good['g_link']}' target='_blank'> Магазин</a> &nbsp;";
+
+        $stats = getGoodSalesStat($goodId);
+        if ($stats) {
+            $back = floor($stats['sum'] + $stats['total_sum'] / $stats['total_count'] * $stats['count']);
+            $paid = $stats['total_sum'];
+            $left = $back - $paid;
+            $color = $left > 0 ? "blue" : "red";
+            $output .= "<br><span style='color:green;'>$back</span> / $paid <span style='color:$color;'>($left)</span> - ";
+        }
 
         if (userHasPermission(PERM_SEE_STATS)) {
             $output .= "<img src='/images/views.png' style='vertical-align: middle;'>{$good['g_views']}";
@@ -173,6 +178,34 @@ function getDBRowState($state) {
     return "Невідомий";
 }
 
+#---------------------------------------------------------------------------------------------------
+# copy good
+function copyGood($goodId) {
+    if (!copy_good($goodId)) {
+        show_message("Не вдається скопіювати товар!");
+        return false;
+    }
+
+    $newGoodId = mysql_insert_id();
+
+    $dimGrid = getDimGridByGood($goodId);
+    if (!count($dimGrid)) {
+        show_message("Не вдається знайти розмірну сітку!");
+        return false;
+    }
+
+    foreach($dimGrid as $row) {
+        if (!addDimGridRow($newGoodId, $row['dg_data'])) {
+            show_message("Не вдається скопіювати розмірний ряд!");
+            return false;
+        }
+    }
+
+    return $newGoodId;
+}
+
+#---------------------------------------------------------------------------------------------------
+# ORDERS & Basket
 #---------------------------------------------------------------------------------------------------
 # checks whether good is already in basket
 function inBasket($good, $dim) {

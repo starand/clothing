@@ -13,7 +13,6 @@
     foreach ($sold_goods as $good) {
         array_push($goods, $good);
     }
-    
 
     show_goods($goods, 3);
 

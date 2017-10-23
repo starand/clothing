@@ -3,6 +3,22 @@
     include_once ROOT_PATH."/db/db.php";
     include_once ROOT_PATH."/common/functions.php";
 
+    if (isset($_GET['copyId'])) {
+        $copyFromId = (int)$_GET['copyId'];
+        $copyFromGood = get_good($copyFromId);
+        if (!$copyFromGood) {
+            show_error("Вибрано не вірний товар для копіювання");
+            die();
+        }
+
+        $newGoodId = copyGood($copyFromId);
+        if (!$newGoodId) {
+            die();
+        }
+
+        $_GET['id'] = $newGoodId;
+    }
+
     if (!isset($_GET['id'])) {
         show_error("Вибрано не вірний товар");
     }

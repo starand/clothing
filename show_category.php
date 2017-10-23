@@ -3,6 +3,10 @@
     include_once ROOT_PATH."/db/db.php";
     include_once ROOT_PATH."/common/functions.php";
 
+    if (isset($_GET['cat'])) {
+        $_GET['id'] = $_GET['cat'];
+    }
+
     if (!isset($_GET['id'])) {
         show_error("Категорія вказана не правильно");
     }

@@ -3,7 +3,7 @@
 	include_once ROOT_PATH."/db/config.php";
 
     # connecting
-	$conn = @mysql_pconnect($host, $user, $pswd) or die("Can not connect to database!!");
+	$conn = @mysql_pconnect($host, $db_user, $pswd) or die("Can not connect to database!!");
 	mysql_select_db($db) or die("Can not select database!!");
 	# set UTF8 as default connection
 	mysql_query("SET character_set_results = 'utf8', character_set_client = 'utf8', ".
@@ -55,6 +55,19 @@ function add_good($cat, $title, $desc, $image, $count, $price, $link = "") {
 	$sql = "INSERT INTO goods ".
 		   "VALUES(NULL, $cat, '$title', '$desc', '$image', now(), now(), $count, $price, 0, ".
 		   GOOD_STATE_WAIT.", '$link', 0)";
+	return uquery($sql);
+}
+
+#---------------------------------------------------------------------------------------------------
+## copies row in goods table
+function copy_good($goodId) {
+	$goodId = (int)$goodId;
+
+	$sql = "INSERT INTO goods (g_id, g_cat, g_title, g_desc, g_image, g_ctime, g_mtime, g_count,
+							   g_price, g_total_price, g_state, g_link, g_views)
+			SELECT NULL, g_cat, g_title, g_desc, g_image, now(), now(), g_count, g_price,
+				   g_total_price, ".GOOD_STATE_WAIT.", g_link, 0
+			FROM goods WHERE g_id=$goodId";
 	return uquery($sql);
 }
 
@@ -272,12 +285,25 @@ function getUserByLogin($login) {
 define('DG_PRESENT', 0);
 define('DG_SOLD', 1);
 
+#---------------------------------------------------------------------------------------------------
 # add dim grid row
 function addDimGridRow($good, $data) {
 	$good = (int)$good;
 	$data = addslashes($data);
 
 	$sql = "INSERT INTO dim_grid VALUES(NULL, $good, '$data', 0)";
+	return uquery($sql);
+}
+
+#---------------------------------------------------------------------------------------------------
+## copies row in dim_grid table
+function copy_dim_grid_row($dgId, $goodId) {
+	$dgId = (int)$dgId;
+	$goodId = (int)$goodId;
+
+	$sql = "INSERT INTO dim_grid (dg_id, dg_good, dg_data, dg_state)
+			SELECT NULL, $goodId, dg_data, ".DG_PRESENT."
+			FROM dim_grid WHERE dg_id=$dgId";
 	return uquery($sql);
 }
 

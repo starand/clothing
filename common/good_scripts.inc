@@ -12,9 +12,10 @@ $(document).ready(function() {
         event.stopImmediatePropagation();
     });
 
-    $("#goods td").click(function() {
+    $(".copy-good").click(function(event) {
         goodId = $(this).attr('id');
-        $("#main").load("show_good.php?id=" + goodId);
+        $("#main").load("show_good.php?copyId=" + goodId);
+        event.stopImmediatePropagation();
     });
 });
 </script>

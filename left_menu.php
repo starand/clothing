@@ -16,7 +16,7 @@
 
         foreach($sub_cats as $sub_cat) {
             echo "<tr><td id='catItem' class='cat-item'> &nbsp; ";
-            echo "<a id='{$sub_cat['cat_id']}'>";
+            echo "<a class='category' href='/?cat={$sub_cat['cat_id']}'>";
             echo "{$sub_cat['cat_desc']}</a>";
             echo "</td></tr>";
         }
@@ -61,10 +61,6 @@
 
 <script>
 $(document).ready(function() {
-    $("#catItem a").click(function() {
-        catId = $(this).attr('id');
-        $("#main").load("show_category.php?id=" + catId);
-    });
     $("#add_category").on("click", function() {
         $("#main").load("add_category.php");
     });

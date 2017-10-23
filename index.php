@@ -45,6 +45,8 @@ function load_page(page, target) {
             <?
                 if (isset($_GET['id'])) {
                     include_once "show_good.php";
+                } else if(isset($_GET['cat'])) {
+                    include_once "show_category.php";
                 } else {
                     include_once "main.php";
                 }

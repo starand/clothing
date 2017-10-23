@@ -12,13 +12,5 @@
     <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
     <title>Одяг та взуття на хлопчика</title>
 
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script>
-    (adsbygoogle = window.adsbygoogle || []).push({
-        google_ad_client: "ca-pub-4686408692753567",
-        enable_page_level_ads: true
-    });
-    </script>
-
     <script>parent.document.getElementById('main_error').innerHTML = ' &nbsp; '</script>
 </HEAD>
