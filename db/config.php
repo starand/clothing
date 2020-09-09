@@ -2,8 +2,8 @@
 ################################################
 ## DO NOT MODIFY THIS FILE AS IT CAUSE BREAKING CHANGES ON SERVER
 
-    $host = "";
-    $user = "";
-    $pswd = "";
-    $db = "";
+    $host = "boycloth.mysql.tools";
+    $user = "boycloth_db";
+    $pswd = "ggbVRwmS";
+    $db = "boycloth_db";
 ?>

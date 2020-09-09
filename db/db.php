@@ -3,34 +3,45 @@
 	include_once ROOT_PATH."/db/config.php";
 
     # connecting
-	$conn = @mysql_pconnect($host, $db_user, $pswd) or die("Can not connect to database!!");
-	mysql_select_db($db) or die("Can not select database!!");
+	$conn = mysqli_connect($host, $user, $pswd, $db) or die("Can not connect to database!!");
 	# set UTF8 as default connection
-	mysql_query("SET character_set_results = 'utf8', character_set_client = 'utf8', ".
-		"character_set_connection='utf8',character_set_database='utf8',character_set_server='utf8'",
-		$conn);
+	mysqli_query($conn, "SET character_set_results = 'utf8', character_set_client = 'utf8', ".
+		"character_set_connection='utf8',character_set_database='utf8',character_set_server='utf8'");
 
 #---------------------------------------------------------------------------------------------------
 # MySQL helper functions
 #---------------------------------------------------------------------------------------------------
-## send query to db	
-function uquery($query) 
-{
-	$result = @mysql_query($query) or die("Can not send query to database!!");
+function uquery($query) {
+	global $conn;
+	$result = mysqli_query($conn, $query); // or die("Can not send query to database!! - '$query'");
 	return $result;
+}
+
+#---------------------------------------------------------------------------------------------------
+## returns last inserted id
+function last_insert_id() {
+	global $conn;
+	return mysqli_insert_id($conn);
+}
+
+#---------------------------------------------------------------------------------------------------
+## replacement for missing method in PHP 7
+function mysqli_result($result, $row, $field=0) {
+	$row = mysqli_fetch_assoc($result);
+	return reset($row);
 }
 
 #---------------------------------------------------------------------------------------------------
 ## convert mysql result into assosiate array
 function res_to_array($res) {
-	for($result=array(); $row=mysql_fetch_array($res); $result[]=$row);
+	for($result=array(); $row=mysqli_fetch_array($res); $result[]=$row);
 	return $result;
 }
 
 #---------------------------------------------------------------------------------------------------
 ## convert one row result to assosiate array
 function row_to_array($res) {
-	return $res ? mysql_fetch_array($res) : false;
+	return $res ? mysqli_fetch_array($res) : false;
 }
 
 #---------------------------------------------------------------------------------------------------
